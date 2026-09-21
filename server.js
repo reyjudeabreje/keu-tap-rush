@@ -4,7 +4,7 @@ const path = require("path");
 const crypto = require("crypto");
 const { URL } = require("url");
 
-const PORT = Number(process.env.PORT || 4173);
+const PORT = Number.parseInt(process.env.PORT, 10) || 4173;
 const ROOT = __dirname;
 const SUPABASE_URL = typeof process.env.SUPABASE_URL === "string"
   ? process.env.SUPABASE_URL.trim().replace(/\/$/, "")
@@ -514,7 +514,7 @@ function staticFile(request, response, url) {
   const requested = url.pathname === "/" ? "/index.html" : url.pathname;
   const filePath = path.normalize(path.join(ROOT, requested));
   if (!filePath.startsWith(ROOT) || !fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) return json(response, 404, { error: "Not found" });
-  const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".md": "text/plain" };
+  const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".md": "text/plain", ".webmanifest": "application/manifest+json", ".svg": "image/svg+xml" };
   response.writeHead(200, { "Content-Type": types[path.extname(filePath)] || "application/octet-stream" });
   fs.createReadStream(filePath).pipe(response);
 }
@@ -542,4 +542,4 @@ const server = http.createServer(async (request, response) => {
   }
 });
 
-server.listen(PORT, () => console.log(`KEU TAP RUSH listening on http://localhost:${PORT}`));
+server.listen(PORT, "0.0.0.0", () => console.log(`KEU TAP RUSH listening on http://0.0.0.0:${PORT}`));

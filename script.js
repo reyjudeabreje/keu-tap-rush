@@ -35,6 +35,7 @@ const achievementRows = document.getElementById("achievementRows");
 const badgeDetail = document.getElementById("badgeDetail");
 const myScoresRows = document.getElementById("myScoresRows");
 const levelUpNotice = document.getElementById("levelUpNotice");
+const installAppBtn = document.getElementById("installAppBtn");
 
 const API_BASE = (window.LEADERBOARD_API || "/api").replace(/\/$/, "");
 const modes = {
@@ -62,8 +63,40 @@ let heartbeatTimer;
 let livePlayersTimer;
 let gameSession = null;
 let supabaseConnected = false;
+let deferredInstallPrompt = null;
 const HEARTBEAT_INTERVAL_MS = 12000;
 const LIVE_PLAYERS_REFRESH_MS = 8000;
+
+function isStandaloneMode() {
+  return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+}
+
+function updateInstallButton() {
+  installAppBtn.classList.toggle("hidden", isStandaloneMode() || !deferredInstallPrompt);
+}
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  updateInstallButton();
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  updateInstallButton();
+});
+
+installAppBtn.addEventListener("click", async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  updateInstallButton();
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
 
 function bestStorageKey() { return `keuTapRushBest-${selectedMode}`; }
 function getBestScore() { return Number(localStorage.getItem(bestStorageKey()) || 0); }
@@ -503,3 +536,4 @@ window.addEventListener("pagehide", removeActivePlayer);
 showModeScreen();
 checkSupabaseConnection();
 loadLeaderboard();
+updateInstallButton();

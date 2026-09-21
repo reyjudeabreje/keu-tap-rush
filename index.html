@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KEU TAP RUSH</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game">
+    <header class="app-header">
+      <h1>KEU TAP RUSH</h1>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button id="playNavBtn" class="nav-btn active">PLAY</button>
+        <button id="leaderboardNavBtn" class="nav-btn">LEADERBOARD</button>
+      </nav>
+    </header>
+
+    <section id="modeScreen" class="mode-screen">
+      <p class="eyebrow">SELECT YOUR CHALLENGE</p>
+      <label class="name-field" for="nickname">
+        <span>NICKNAME</span>
+        <input id="nickname" type="text" maxlength="16" autocomplete="nickname" placeholder="Enter a nickname" required>
+        <small>1–16 characters</small>
+      </label>
+      <div class="mode-list">
+        <button class="mode-btn" data-mode="easy"><span>EASY</span><small>30 SEC · x1</small></button>
+        <button class="mode-btn" data-mode="normal"><span>NORMAL</span><small>30 SEC · x1</small></button>
+        <button class="mode-btn" data-mode="hard"><span>HARD</span><small>25 SEC · x2</small></button>
+        <button class="mode-btn" data-mode="superHard"><span>SUPER HARD</span><small>20 SEC · x3</small></button>
+        <button class="mode-btn god-mode" data-mode="god"><span>GOD MODE</span><small>15 SEC · x5</small></button>
+      </div>
+      <button id="startBtn" class="primary-btn" disabled>SELECT A MODE</button>
+      <p id="startHint" class="form-hint" aria-live="polite"></p>
+    </section>
+
+    <section id="gameScreen" class="hidden">
+      <div class="run-header"><span class="mode-label">MODE: <b id="modeName">NORMAL</b></span><span id="onlineStatus" class="online-status">SUPABASE NOT CONNECTED</span></div>
+      <div class="stats">
+        <span>Time: <b id="time">30</b></span><span>Score: <b id="score">0</b></span>
+        <span>Combo: <b id="combo">0 ×1</b></span><span>Best: <b id="bestScore">0</b></span>
+      </div>
+      <div id="gameArea"><button id="target">TAP!</button></div>
+    </section>
+
+    <section id="gameOver" class="hidden result-screen">
+      <h2>GAME OVER!</h2>
+      <p id="results"></p>
+      <div class="online-result" id="onlineResult" aria-live="polite"></div>
+      <div class="game-over-actions">
+        <button id="submitScoreBtn" class="primary-btn">SUBMIT SCORE</button>
+        <button id="restartBtn" class="primary-btn">PLAY AGAIN</button>
+        <button id="changeModeBtn" class="secondary-btn">CHANGE MODE</button>
+      </div>
+    </section>
+
+    <section id="leaderboardScreen" class="hidden leaderboard-screen">
+      <div class="section-heading">
+        <div><p class="eyebrow">GLOBAL RANKINGS</p><h2>TOP PLAYERS</h2></div>
+        <button id="refreshLeaderboardBtn" class="icon-btn" title="Refresh leaderboard" aria-label="Refresh leaderboard">↻</button>
+      </div>
+      <div class="leaderboard-filters" role="group" aria-label="Leaderboard mode filter">
+        <button class="filter-btn selected" data-filter="all">ALL MODES</button>
+        <button class="filter-btn" data-filter="easy">EASY</button><button class="filter-btn" data-filter="normal">NORMAL</button>
+        <button class="filter-btn" data-filter="hard">HARD</button><button class="filter-btn" data-filter="superHard">SUPER HARD</button>
+        <button class="filter-btn" data-filter="god">GOD MODE</button>
+      </div>
+      <p id="leaderboardStatus" class="leaderboard-status" aria-live="polite">Checking Supabase connection…</p>
+      <section class="active-players" aria-labelledby="activePlayersTitle">
+        <div class="active-players-heading">
+          <h3 id="activePlayersTitle">LIVE PLAYERS</h3>
+          <span id="activePlayersStatus">Checking…</span>
+        </div>
+        <div id="activePlayersRows"></div>
+      </section>
+      <div class="leaderboard-table" role="table" aria-label="Global leaderboard">
+        <div class="leaderboard-row leaderboard-head" role="row"><span>RANK</span><span>PLAYER</span><span>MODE</span><span>SCORE</span><span>COMBO</span></div>
+        <div id="leaderboardRows"></div>
+      </div>
+      <div id="myRank" class="my-rank hidden"></div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

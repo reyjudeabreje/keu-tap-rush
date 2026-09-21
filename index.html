@@ -13,6 +13,7 @@
       <nav class="main-nav" aria-label="Main navigation">
         <button id="playNavBtn" class="nav-btn active">PLAY</button>
         <button id="leaderboardNavBtn" class="nav-btn">LEADERBOARD</button>
+        <button id="profileNavBtn" class="nav-btn">PROFILE</button>
       </nav>
     </header>
 
@@ -47,6 +48,7 @@
       <h2>GAME OVER!</h2>
       <p id="results"></p>
       <div class="online-result" id="onlineResult" aria-live="polite"></div>
+      <div id="levelUpNotice" class="level-up-notice hidden" aria-live="polite"></div>
       <div class="game-over-actions">
         <button id="submitScoreBtn" class="primary-btn">SUBMIT SCORE</button>
         <button id="restartBtn" class="primary-btn">PLAY AGAIN</button>
@@ -69,7 +71,7 @@
       <section class="active-players" aria-labelledby="activePlayersTitle">
         <div class="active-players-heading">
           <h3 id="activePlayersTitle">LIVE PLAYERS</h3>
-          <span id="activePlayersStatus">Checking…</span>
+          <span id="activePlayersStatus">Loading live players...</span>
         </div>
         <div id="activePlayersRows"></div>
       </section>
@@ -78,6 +80,29 @@
         <div id="leaderboardRows"></div>
       </div>
       <div id="myRank" class="my-rank hidden"></div>
+    </section>
+
+    <section id="profileScreen" class="hidden profile-screen">
+      <div class="section-heading">
+        <div><p class="eyebrow">PERSONAL CONTROL ROOM</p><h2>PLAYER PROFILE</h2></div>
+        <button id="refreshProfileBtn" class="icon-btn" title="Refresh profile" aria-label="Refresh profile">↻</button>
+      </div>
+      <div class="profile-identity">
+        <div><span class="profile-label">PLAYER ID</span><strong id="profilePlayerId">--------</strong></div>
+        <label class="profile-nickname"><span class="profile-label">NICKNAME</span><input id="profileNickname" maxlength="16" autocomplete="nickname"><button id="saveNicknameBtn" class="secondary-btn">SAVE</button></label>
+      </div>
+      <p id="profileStatus" class="leaderboard-status" aria-live="polite">Checking Supabase connection…</p>
+      <section id="levelCard" class="level-card" aria-labelledby="levelCardTitle"></section>
+      <div id="profileCards" class="profile-cards"></div>
+      <div class="profile-filters" role="group" aria-label="Profile mode filter">
+        <button class="filter-btn profile-filter selected" data-profile-filter="all">ALL MODES</button>
+        <button class="filter-btn profile-filter" data-profile-filter="easy">EASY</button><button class="filter-btn profile-filter" data-profile-filter="normal">NORMAL</button>
+        <button class="filter-btn profile-filter" data-profile-filter="hard">HARD</button><button class="filter-btn profile-filter" data-profile-filter="superHard">SUPER HARD</button>
+        <button class="filter-btn profile-filter" data-profile-filter="god">GOD MODE</button>
+      </div>
+      <div class="mode-stats-table"><div class="mode-stats-row mode-stats-head"><span>MODE</span><span>BEST SCORE</span><span>BEST COMBO</span><span>GAMES</span></div><div id="modeStatsRows"></div></div>
+      <section class="achievements" aria-labelledby="achievementsTitle"><h3 id="achievementsTitle">BADGES</h3><div id="achievementRows" class="achievement-grid"></div><div id="badgeDetail" class="badge-detail hidden" aria-live="polite"></div></section>
+      <section class="my-scores" aria-labelledby="myScoresTitle"><div class="subsection-heading"><h3 id="myScoresTitle">MY SCORES</h3><span>20 MOST RECENT</span></div><div id="myScoresRows"></div></section>
     </section>
   </main>
   <script src="script.js"></script>
